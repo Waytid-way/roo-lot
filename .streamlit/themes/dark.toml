@@ -1,0 +1,11 @@
+# Dark Theme Configuration
+# Eye-friendly dark mode for night usage
+# Reduced eye strain with proper contrast
+
+[theme]
+primaryColor = "#00BCD4"          # Cyan accent - stands out on dark
+backgroundColor = "#0E1117"       # Dark charcoal - main background
+secondaryBackgroundColor = "#1E2127"  # Lighter charcoal - cards and panels
+textColor = "#FAFAFA"             # Off-white - readable on dark
+font = "sans serif"
+base = "dark"
