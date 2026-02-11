@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# ML Models
+*.pkl
+*.h5
+*.joblib
+
+# Data (exclude large files, keep templates)
+data/*.csv
+!data/*template*.csv
+!data/*sample*.csv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Outputs (keep folder structure)
+outputs/*.png
+outputs/*.html
+!outputs/.gitkeep
