@@ -1,0 +1,13 @@
+scikit-learn
+pandas
+numpy
+matplotlib
+seaborn
+plotly
+streamlit
+fastapi
+uvicorn
+pydantic
+pickle-mixin
+joblib
+scipy
