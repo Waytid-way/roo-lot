@@ -1,0 +1,18 @@
+DATA PREPROCESSING REPORT
+Generated: 2026-02-11 21:56:20.059617
+
+ORIGINAL DATA:
+- Total samples: 100
+- Features: 5
+
+CLEANING STEPS:
+1. Missing values filled with median
+2. Outliers removed using IQR method (threshold=1.5)
+3. Features scaled using StandardScaler
+
+PROCESSED DATA:
+- Total samples: 89
+- Samples removed: 11 (11.00%)
+
+FILES CREATED:
+- data/electricity_data_processed.csv
