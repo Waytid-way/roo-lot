@@ -1,0 +1,32 @@
+{
+  "training_date": "2026-02-11T22:05:34.998198",
+  "model_type": "LinearRegression",
+  "n_features": 5,
+  "feature_names": [
+    "ac_hours_per_day",
+    "num_appliances",
+    "room_area",
+    "ac_temperature",
+    "num_people"
+  ],
+  "n_train_samples": 80,
+  "n_test_samples": 20,
+  "metrics": {
+    "train_r2": 0.9923235122329582,
+    "test_r2": 0.9922701295386099,
+    "train_mae": 44.700839852829844,
+    "test_mae": 43.67192224309457,
+    "train_rmse": 53.59092830212934,
+    "test_rmse": 58.45048654083016,
+    "cv_mean_r2": 0.9887317328797932,
+    "cv_std_r2": 0.0039675537764454
+  },
+  "coefficients": {
+    "ac_hours_per_day": 614.3540657712799,
+    "num_appliances": 41.03375375841691,
+    "room_area": 20.950183565208697,
+    "ac_temperature": -102.19426773363159,
+    "num_people": 37.36884154974442
+  },
+  "intercept": 1542.355875
+}
