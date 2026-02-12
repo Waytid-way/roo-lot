@@ -1,9 +1,19 @@
 """
-Utilities Package for Roo-Lot Application
-Provides theme management and helper functions
+Roo-Lot Chatbot - Utilities Module
 """
 
-from .theme_manager import ThemeManager
+from .model_predictor import ElectricityPredictor
+from .js_injector import (
+    inject_smooth_scroll,
+    inject_custom_scrollbar,
+    inject_loading_overlay,
+    inject_quick_reply_styles
+)
 
-__all__ = ['ThemeManager']
-__version__ = '2.0.0'
+__all__ = [
+    'ElectricityPredictor',
+    'inject_smooth_scroll',
+    'inject_custom_scrollbar',
+    'inject_loading_overlay',
+    'inject_quick_reply_styles'
+]

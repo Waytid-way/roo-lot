@@ -1,7 +1,0 @@
-DATASET OVERVIEW
-Shape: (100, 6)
-------------------------------
-Most correlated feature: ac_hours_per_day (r=0.974)
-Average bill: 1561.45, Median bill: 1544.97
-Average AC usage: 6.58 hours/day
-Average room size: 30.50 sq.m.
