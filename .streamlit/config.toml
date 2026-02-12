@@ -1,6 +1,17 @@
+# Roo-Lot Streamlit Configuration
+# Clean config for Streamlit 1.54.0 (theme.sidebar removed in this version)
+
 [theme]
 primaryColor = "#F63366"
 backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#F0F2F6"
 textColor = "#262730"
 font = "sans serif"
+
+[server]
+headless = true
+port = 8501
+maxUploadSize = 200
+
+[browser]
+gatherUsageStats = false

@@ -162,51 +162,40 @@ def render_result_card(prediction_data: dict, expanded: bool = False):
     </style>
     """, unsafe_allow_html=True)
 
-    # Content (f-string) - NO INDENTATION to avoid Markdown code block interpretation
-    st.markdown(f"""
-<div class="result-card scale-in">
-    <!-- Header -->
-    <div class="result-header">
-        <div class="result-icon">⚡</div>
-        <div class="result-label">ELECTRICITY BILL PREDICTION</div>
-    </div>
-    
-    <!-- Main Amount -->
-    <div class="result-amount">
-        <span class="amount-value">{amount:.2f}</span>
-        <span class="amount-unit">THB</span>
-    </div>
-    
-    <!-- Range -->
-    <div class="result-range">
-        ±{range_val:.2f} THB (MAE)
-    </div>
-    
-    <!-- Quick Stats Grid -->
-    <div class="result-stats-grid">
-        <div class="stat-cell">
-            <div class="stat-value">{metrics['r2_score']*100:.1f}%</div>
-            <div class="stat-label">R² Score</div>
-        </div>
-        <div class="stat-cell">
-            <div class="stat-value">{breakdown['ac_cost']:.0f}฿</div>
-            <div class="stat-label">AC Cost</div>
-        </div>
-        <div class="stat-cell">
-            <div class="stat-value">{breakdown['appliances_cost']:.0f}฿</div>
-            <div class="stat-label">Appliances</div>
-        </div>
-    </div>
-    
-    <!-- Expand CTA -->
-    <div class="result-expand-cta">
-        <span>กดเพื่อดูผลลัพธ์เชิงลึก (Double Click on Card or Check Below)</span>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-    </div>
+    # Content (f-string) - NO INDENTATION to prevent Markdown code block interpretation
+    st.markdown(f"""<div class="result-card scale-in">
+<div class="result-header">
+<div class="result-icon">⚡</div>
+<div class="result-label">ELECTRICITY BILL PREDICTION</div>
 </div>
-    """, unsafe_allow_html=True)
+<div class="result-amount">
+<span class="amount-value">{amount:.2f}</span>
+<span class="amount-unit">THB</span>
+</div>
+<div class="result-range">
+±{range_val:.2f} THB (MAE)
+</div>
+<div class="result-stats-grid">
+<div class="stat-cell">
+<div class="stat-value">{metrics['r2_score']*100:.1f}%</div>
+<div class="stat-label">R² Score</div>
+</div>
+<div class="stat-cell">
+<div class="stat-value">{breakdown['ac_cost']:.0f}฿</div>
+<div class="stat-label">AC Cost</div>
+</div>
+<div class="stat-cell">
+<div class="stat-value">{breakdown['appliances_cost']:.0f}฿</div>
+<div class="stat-label">Appliances</div>
+</div>
+</div>
+<div class="result-expand-cta">
+<span>กดเพื่อดูผลลัพธ์เชิงลึก (Double Click on Card or Check Below)</span>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+<path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</div>
+</div>""", unsafe_allow_html=True)
     
     # Always show detailed view if expanded is True passed from parent, 
     # but currently we just render it below since state management for expand/collapse 

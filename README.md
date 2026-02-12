@@ -12,7 +12,7 @@
 ---
 
 ## 📖 Overview
-**Roo-Lot** is a machine learning-powered web application designed to help dormitory residents and homeowners estimate their monthly electricity bills. By inputting usage patterns like AC hours, room size, and number of appliances, the app provides an accurate prediction using a trained Lasso Regression model.
+**Roo-Lot** is a machine learning-powered web application designed to help dormitory residents and homeowners estimate their monthly electricity bills. By inputting usage details including **room size** (sq.m.), **AC usage hours**, and the number of **fans**, **lights**, **computers**, and **other appliances**, the app provides an accurate prediction using a trained Lasso Regression model.
 
 The project demonstrates a complete end-to-end ML pipeline:
 1. Data Generation & Validation
@@ -60,21 +60,44 @@ streamlit run app.py
 ```
 The app will open in your browser at `http://localhost:8501`.
 
+## 🧪 Testing
+The project includes a comprehensive test suite covering unit, integration, and UI tests.
+
+### Running Tests
+To execute the full test suite:
+```bash
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Run all tests
+pytest tests/ -v
+```
+
+### Test Coverage
+- **Unit Tests:** Core logic (Conversation, Validator, Predictor)
+- **UI Tests:** Component rendering and CSS validation
+- **Integration Tests:** Full conversation flow (Note: Some tests are marked xfail due to `AppTest` framework limitations)
+- **Browser Tests:** Selenium-based tests for responsiveness (require local Chrome environment)
+
+For detailed analysis, see [Test Expert Analysis](docs/TEST_EXPERT_ANALYSIS.md).
+
 ## 📂 Project Structure
 ```
 roo-lot/
-├── app.py                  # Streamlit Web Application
+├── app_chatbot.py          # Main Chatbot Application
+├── tests/                  # Test Suite
+│   ├── test_ui_rendering.py
+│   ├── test_integration.py
+│   └── ...
+├── docs/                   # Documentation & Analysis
 ├── data/                   # Dataset files (raw, processed)
 ├── models/                 # Trained models (.pkl) & metadata
 ├── notebooks/              # Jupyter notebooks for experiments
 ├── outputs/                # Evaluation plots & reports
 ├── scripts/                # Python scripts for ML pipeline
-│   ├── validate_data.py    # Data generation
-│   ├── preprocess_data.py  # Cleaning & scaling
-│   ├── train_model.py      # Model training
-│   ├── evaluate_model.py   # Model evaluation
-│   └── optimize_model.py   # Hyperparameter tuning
-├── docs/                   # Detailed documentation
+├── utils/                  # Utility modules
+├── components/             # Streamlit UI components
+├── conversation/           # Conversation logic
 └── requirements.txt        # Project dependencies
 ```
 
@@ -100,4 +123,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
-*Created by [Your Name] using Antigravity Agent*
+*Created by Waytid-way*
