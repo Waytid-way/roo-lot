@@ -39,10 +39,42 @@ Thumbs.db
 .streamlit/secrets.toml
 
 # Outputs (keep folder structure)
-outputs/*.png
-outputs/*.html
+# Ignore all outputs by default, but keep report images
+outputs/**/*.png
+outputs/**/*.html
+!outputs/eda/*.png
+!outputs/model_viz/*.png
 !outputs/.gitkeep
 
 # Report
 Report ML Project (Roo-Lot) Template.md
 คำแนะนำการสร้างรายงาน.md
+
+# Documentation - Development Only (Not for Git)
+STREAMLIT_DEPLOYMENT_CHECKLIST.md
+STREAMLIT_FRONTEND_BEST_PRACTICES.md
+Skill Plan*.md
+*SUMMARY*.md
+*CHECKLIST*.md
+*GUIDE*.md
+PHASE_*.md
+FRONTEND_*.md
+IMPLEMENTATION*.md
+MERGE*.md
+PROJECT_STRUCTURE.md
+QUICK_START.md
+README_V*.md
+audit_report.md
+frontend_fix_validation.md
+
+# Debug/Temporary Files
+debug_*.py
+fix_*.py
+test_alignment.py
+
+# Development Documentation
+CHANGELOG.md
+GIT_COMMIT_INSTRUCTIONS.md
+HOTFIX_*.md
+MODEL_RETRAINING_SUMMARY.md
+FRONTEND_BACKEND_ALIGNMENT.md
