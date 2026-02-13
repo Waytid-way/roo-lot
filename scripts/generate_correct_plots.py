@@ -200,7 +200,7 @@ def generate_plots():
     print("✅ ALL PLOTS GENERATED SUCCESSFULLY!")
     print("=" * 70)
     print(f"\nExpected metrics for documentation:")
-    print(f"  R² Score: {r2:.4f} (98.51% accuracy)")
+    print(f"  R² Score: {r2:.4f} (98.88% accuracy)")
     print(f"  MAE: {mae:.2f} kWh (≈ {mae * 4.2:.0f} THB)")
     print(f"  RMSE: {rmse:.2f} kWh")
     print("=" * 70)

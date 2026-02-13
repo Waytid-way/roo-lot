@@ -206,7 +206,7 @@ def render_detailed_analysis(prediction_data: dict, r2: float, mae_kwh: float, r
         st.metric(
             "R² Score",
             f"{r2*100:.2f}%",
-            help="Model Accuracy - โมเดลอธิบายความแปรปรวนของข้อมูลได้ 98.51%"
+            help="Model Accuracy - โมเดลอธิบายความแปรปรวนของข้อมูลได้ 98.88%"
         )
     
     with col2:
