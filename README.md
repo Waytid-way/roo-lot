@@ -1,126 +1,82 @@
-![Roo-Lot Banner](https://img.icons8.com/color/144/000000/light-on.png)
+# Roo-Lot: Electricity Bill Prediction System
 
-# 💡 Roo-Lot (รู้หลอด)
-### "รู้อะไร ไม่เท่ารู้หลอด"
-**Predict your monthly electricity bill with Machine Learning**
+## 🎯 Project Overview
+Roo-Lot is a machine learning-powered web application designed to help dormitory residents and homeowners estimate their monthly electricity bills. By inputting usage details including room size, AC usage, and appliance counts, the system provides accurate predictions to aid in financial planning. This project utilizes a Random Forest Regression model trained on household energy consumption data to deliver precise estimates.
 
-![Python](https://img.shields.io/badge/Python-3.9-blue)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.28-red)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.3-orange)
-![License](https://img.shields.io/badge/License-MIT-green)
+## 🚀 Quick Start
 
----
-
-## 📖 Overview
-**Roo-Lot** is a machine learning-powered web application designed to help dormitory residents and homeowners estimate their monthly electricity bills. By inputting usage details including **room size** (sq.m.), **AC usage hours**, and the number of **fans**, **lights**, **computers**, and **other appliances**, the app provides an accurate prediction using a trained Lasso Regression model.
-
-The project demonstrates a complete end-to-end ML pipeline:
-1. Data Generation & Validation
-2. Exploratory Data Analysis (EDA)
-3. Model Training & Hyperparameter Tuning
-4. Web Application Development
-5. Deployment Configuration
-
-## ✨ Key Features
-- **Accurate Prediction:** Uses a Lasso Regression model with R2 > 0.99 (on synthetic test data).
-- **Interactive UI:** Real-time bill estimation with gauge charts.
-- **Scenario Analysis:** Compare costs for different usage patterns (e.g., "Saving Mode" vs. "Heavy Usage").
-- **Cost Breakdown:** Visualizes estimated costs from AC, appliances, and base fees.
-- **Thai Language Support:** Designed for local users with Thai interface elements.
-
-## 🚀 Installation & Usage
-
-### Prerequisites
-- Python 3.8 or higher
-- Git
-
-### 1. Clone the Repository
+### Installation
 ```bash
-git clone https://github.com/your-username/roo-lot.git
-cd roo-lot
-```
-
-### 2. Create Virtual Environment (Optional but Recommended)
-```bash
-python -m venv venv
-# Windows
-venv\Scripts\activate
-# Mac/Linux
-source venv/bin/activate
-```
-
-### 3. Install Dependencies
-```bash
+# Python 3.9+ required
 pip install -r requirements.txt
 ```
 
-### 4. Run the Application
+### Training
 ```bash
-streamlit run app.py
-```
-The app will open in your browser at `http://localhost:8501`.
-
-## 🧪 Testing
-The project includes a comprehensive test suite covering unit, integration, and UI tests.
-
-### Running Tests
-To execute the full test suite:
-```bash
-# Install development dependencies
-pip install -r requirements-dev.txt
-
-# Run all tests
-pytest tests/ -v
+python scripts/train_model.py
+# Expected output (on full dataset): R² = 0.93, MAE = 1.13 kWh
+# Training time: ~2 minutes
 ```
 
-### Test Coverage
-- **Unit Tests:** Core logic (Conversation, Validator, Predictor)
-- **UI Tests:** Component rendering and CSS validation
-- **Integration Tests:** Full conversation flow (Note: Some tests are marked xfail due to `AppTest` framework limitations)
-- **Browser Tests:** Selenium-based tests for responsiveness (require local Chrome environment)
+### Running Web App
+```bash
+streamlit run app_chatbot.py
+# Opens at http://localhost:8501
+```
 
-For detailed analysis, see [Test Expert Analysis](docs/TEST_EXPERT_ANALYSIS.md).
+## 📊 Performance Metrics
 
-## 📂 Project Structure
+| Model | R² | MAE (kWh) | RMSE (kWh) | Training Time |
+|-------|-----|-----------|------------|---------------|
+| **Random Forest** | **0.9851** | **16.95** | **21.67** | 120s |
+| Linear Regression | 0.9145 | 1.27 | 1.61 | 5s |
+
+## 🏗️ Project Structure
+
 ```
 roo-lot/
-├── app_chatbot.py          # Main Chatbot Application
-├── tests/                  # Test Suite
-│   ├── test_ui_rendering.py
-│   ├── test_integration.py
-│   └── ...
-├── docs/                   # Documentation & Analysis
-├── data/                   # Dataset files (raw, processed)
-├── models/                 # Trained models (.pkl) & metadata
-├── notebooks/              # Jupyter notebooks for experiments
-├── outputs/                # Evaluation plots & reports
-├── scripts/                # Python scripts for ML pipeline
-├── utils/                  # Utility modules
-├── components/             # Streamlit UI components
-├── conversation/           # Conversation logic
-└── requirements.txt        # Project dependencies
+├── scripts/
+│   └── train_model.py      # Model training pipeline
+├── utils/
+│   └── model_predictor.py  # Inference engine
+├── app_chatbot.py          # Streamlit UI
+├── outputs/
+│   ├── eda/                # EDA visualizations
+│   └── model_viz/          # Model performance plots
+├── models/
+│   └── electricbills_predict.pkl # Trained Random Forest model
+└── data/
+    └── household_energy.csv # Dataset
 ```
 
-## 📊 Model Performance
-The best performing model was **Lasso Regression**:
-- **Test R2 Score:** 0.9923
-- **Mean Absolute Error (MAE):** ~43.63 Baht
-- **Root Mean Squared Error (RMSE):** ~58.41 Baht
+## 🔬 Technical Details
 
-See full details in [Model Selection Report](docs/MODEL_SELECTION.md).
+### Feature Engineering
+- **Seasonal features**: Hot (Mar-Jun), Rainy (Jul-Oct), Cool (Nov-Feb)
+- **Weekend ratio**: Proportion of Sat-Sun in month
+- **Household size**: 1-10 people (primary predictor - 86% importance)
 
-## 🛠️ Tech Stack
-- **Language:** Python
-- **ML Framework:** Scikit-learn
-- **Data Processing:** Pandas, NumPy
-- **Visualization:** Matplotlib, Seaborn, Plotly
-- **Web Framework:** Streamlit
+### Model Configuration
+```python
+RandomForestRegressor(
+    n_estimators=100,
+    max_depth=10,
+    min_samples_split=2,
+    random_state=42
+)
+```
+
+## ⚠️ Known Limitations
+- **Synthetic Date Distribution**: The model training uses synthetic dates to demonstrate seasonal feature engineering, which may not perfectly reflect real-world seasonality (see Report Section 5.2).
+- **Domain Specificity**: Trained on international data; patterns may differ slightly for Thai households.
+- **Extrapolation**: Predictions for household sizes > 10 may be less accurate.
+
+## 📚 Documentation
+- **Full Report**: [Report ML Project (Roo-Lot).md](./Report%20ML%20Project%20(Roo-Lot).md)
+- **Kaggle Dataset**: [Link](https://www.kaggle.com/datasets/samxsam/household-energy-consumption)
 
 ## 🤝 Contributing
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please submit a Pull Request.
 
-## 📜 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-*Created by Waytid-way*
+## 📄 License
+MIT License

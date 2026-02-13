@@ -14,8 +14,9 @@ build/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# ML Models
+# ML Models (except the main prediction model)
 *.pkl
+!models/electricbills_predict.pkl
 *.h5
 *.joblib
 
@@ -41,3 +42,7 @@ Thumbs.db
 outputs/*.png
 outputs/*.html
 !outputs/.gitkeep
+
+# Report
+Report ML Project (Roo-Lot) Template.md
+คำแนะนำการสร้างรายงาน.md
