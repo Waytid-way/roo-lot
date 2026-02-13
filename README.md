@@ -1,7 +1,7 @@
 # Roo-Lot: AI Electricity Bill Predictor
 
 ## 🎯 Project Overview
-Roo-Lot is an AI-powered chatbot that helps predict monthly electricity bills for Thai households. Using a conversational interface in Thai, users can input household size, AC availability, and desired month to get accurate bill estimates. The system uses a Random Forest model trained on household energy consumption data with 98.51% accuracy.
+Roo-Lot is an AI-powered chatbot that helps predict monthly electricity bills for Thai households. Using a conversational interface in Thai, users can input household size, AC availability, and desired month to get accurate bill estimates. The system uses a Random Forest model trained on household energy consumption data with 98.88% accuracy.
 
 ## � Screenshots
 
@@ -26,7 +26,7 @@ pip install -r requirements.txt
 ```bash
 # Train the latest model (Kaggle-aligned features)
 python scripts/train_model_kaggle.py
-# Output: R² = 0.9851, MAE = 16.95 kWh, RMSE = 21.67 kWh
+# Output: R² = 0.9888, MAE = 14.58 kWh, RMSE = 18.56 kWh
 # Training time: ~2 minutes
 ```
 
@@ -41,7 +41,7 @@ streamlit run app_chatbot.py
 
 | Model | R² | MAE (kWh) | MAE (THB) | RMSE (kWh) | Training Time |
 |-------|-----|-----------|-----------|------------|---------------|
-| **Random Forest** | **0.9851** | **16.95** | **71** | **21.67** | 120s |
+| **Random Forest** | **0.9888** | **14.58** | **61** | **18.56** | 120s |
 | Linear Regression | 0.9145 | 1.27 | 5 | 1.61 | 5s |
 
 *Current model: Random Forest with Kaggle-aligned features*

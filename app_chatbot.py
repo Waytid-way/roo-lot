@@ -2,8 +2,8 @@
 Roo-Lot Chatbot Interface - Phase 2 Complete
 Main application with full UI components and styling
 
-Version: 2.0.0 (Python 3.11 Compatible - Model Retrained)
-Last Updated: 2026-02-13 21:30 ICT
+Version: 2.0.0 (Python 3.11 Compatible - Plots Regenerated)
+Last Updated: 2026-02-14 00:15 ICT
 
 IMPORTANT: This frontend must match the model documented in
 Report-ML-Project-Roo-Lot.md Chapter 3.1
@@ -19,10 +19,10 @@ Derived features (auto-generated):
 Model Output:
 - energy_consumption_kwh: float (total only, no breakdown)
 
-Model Performance (Retrained 2026-02-13):
-- R² = 0.9859
-- MAE = 16.63 kWh
-- RMSE = 21.09 kWh
+Model Performance (Regenerated Plots 2026-02-14):
+- R² = 0.9888
+- MAE = 14.58 kWh
+- RMSE = 18.56 kWh
 - Pickle Protocol: 4 (Python 3.11 compatible)
 """
 

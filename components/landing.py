@@ -56,10 +56,7 @@ def render_landing_page():
         font-weight: 700;
         line-height: 1.1;
         margin-bottom: 1.5rem;
-        background: linear-gradient(180deg, #ededed 0%, #a3a3a3 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        color: #ededed;  /* Solid light color - highly visible on dark background */
         letter-spacing: -0.03em;
     }
     
@@ -145,7 +142,7 @@ def render_landing_page():
         </h1>
         <p class="landing-subheadline">
             รู้อะไร ไม่เท่ารู้หลอด – วิเคราะห์การใช้ไฟฟ้าด้วย AI<br/>
-            ความแม่นยำ 99.23% · คาดเคลื่อนเฉลี่ย ±44 บาท
+            ความแม่นยำ 98.51% · คาดเคลื่อนเฉลี่ย ±71 บาท
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -160,17 +157,17 @@ def render_landing_page():
     st.markdown("""
     <div class="landing-metrics">
         <div class="metric-item">
-            <div class="metric-value">R² 0.99</div>
+            <div class="metric-value">R² 0.9888</div>
             <div class="metric-label">Accuracy</div>
         </div>
         <div class="metric-divider"></div>
         <div class="metric-item">
-            <div class="metric-value">±44฿</div>
+            <div class="metric-value">±61฿</div>
             <div class="metric-label">MAE</div>
         </div>
         <div class="metric-divider"></div>
         <div class="metric-item">
-            <div class="metric-value">Lasso</div>
+            <div class="metric-value">Random Forest</div>
             <div class="metric-label">Model</div>
         </div>
     </div>

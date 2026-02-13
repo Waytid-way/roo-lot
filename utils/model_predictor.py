@@ -122,13 +122,13 @@ class ElectricityPredictor:
             return {
                 'amount': round(prediction_baht, 2),
                 'kwh': round(monthly_kwh, 2),
-                'range': round(1.13 * 4.2, 2),  # MAE from Report: 1.13 kWh (monthly basis)
+                'range': round(14.58 * 4.2, 2),  # MAE from generate_correct_plots.py: 14.58 kWh (monthly basis)
                 'details': input_data.to_dict(orient='records')[0],
                 # Removed fabricated breakdown - model doesn't output this!
                 'model_metrics': {
-                    'r2_score': 0.9314,  # From Report Chapter 4.2
-                    'mae': 1.12,         # MAE in kWh (monthly)
-                    'rmse': 1.45         # RMSE in kWh (monthly)
+                    'r2_score': 0.9888,  # From generate_correct_plots.py
+                    'mae': 14.58,         # MAE in kWh (monthly)
+                    'rmse': 18.56         # RMSE in kWh (monthly)
                 }
             }
         except Exception as e:

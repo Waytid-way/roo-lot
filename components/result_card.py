@@ -4,9 +4,9 @@ Roo-Lot Chatbot - Result Card Component
 IMPORTANT: Display ONLY what the model actually predicts (Report Chapter 4.2)
 - Model outputs: Total energy_consumption_kwh (float)
 - Model does NOT output: AC vs Appliances breakdown
-- Model metrics: R² = 0.9851, MAE = 16.95 kWh, RMSE = 21.67 kWh
+- Model metrics: R² = 0.9888, MAE = 14.58 kWh, RMSE = 18.56 kWh
 
-Last Updated: 2026-02-13 21:40 ICT (Updated metrics to match retrained model)
+Last Updated: 2026-02-14 00:15 ICT (Updated metrics to match regenerated plots)
 """
 
 import streamlit as st
@@ -24,15 +24,15 @@ def render_result_card(prediction_data: dict, expanded: bool = False):
     amount = prediction_data['amount']
     kwh = prediction_data.get('kwh', amount)
     
-    # Get MODEL metrics from Report Chapter 4.2 (Retrained Model 2026-02-13)
-    MODEL_R2 = 0.9851       # 98.51% accuracy
-    MODEL_MAE_KWH = 16.95   # Mean Absolute Error in kWh
-    MODEL_RMSE_KWH = 21.67  # Root Mean Squared Error in kWh
+    # Get MODEL metrics from Report Chapter 4.2 (Regenerated Plots 2026-02-14)
+    MODEL_R2 = 0.9888       # 98.88% accuracy
+    MODEL_MAE_KWH = 14.58   # Mean Absolute Error in kWh
+    MODEL_RMSE_KWH = 18.56  # Root Mean Squared Error in kWh
     PRICE_PER_KWH = 4.2     # Approximate THB/unit
     
     # Calculate error in THB
-    mae_thb = MODEL_MAE_KWH * PRICE_PER_KWH    # ≈ 71 THB
-    rmse_thb = MODEL_RMSE_KWH * PRICE_PER_KWH  # ≈ 91 THB
+    mae_thb = MODEL_MAE_KWH * PRICE_PER_KWH    # ≈ 61 THB
+    rmse_thb = MODEL_RMSE_KWH * PRICE_PER_KWH  # ≈ 78 THB
     
     # CSS Styles
     st.markdown("""
