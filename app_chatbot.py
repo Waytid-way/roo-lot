@@ -255,7 +255,8 @@ def render_chat_interface():
                     options=options,
                     horizontal=True,
                     label_visibility="collapsed",
-                    key=f"choice_radio_{current_q['id']}"
+                    key=f"choice_radio_{current_q['id']}",
+                    index=None  # No default selection - user must choose
                 )
                 
             else:

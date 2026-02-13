@@ -108,6 +108,9 @@ class ConversationManager:
         if not current_q:
             return False
         
+        # Add user message first (before validation) so user can see what they sent
+        self.add_user_message(user_input)
+        
         # Validate input using validator
         is_valid, parsed_value, error_msg = self.validator.validate(user_input, current_q)
         
@@ -118,9 +121,6 @@ class ConversationManager:
         # Store valid input
         field_name = current_q["id"] 
         st.session_state.user_inputs[field_name] = parsed_value
-        
-        # Add user message
-        self.add_user_message(f"{user_input} {current_q.get('unit', '')}")
         
         # Check if conversation is complete
         if len(st.session_state.user_inputs) >= len(self.questions):
