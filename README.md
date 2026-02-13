@@ -172,6 +172,6 @@ MIT License
 
 ---
 
-**Last Updated**: 2026-02-13  
-**Version**: 2.0.0 (Python 3.11 Compatible)  
-**Model**: Random Forest with Kaggle-aligned features
+**Last Updated**: 2026-02-14  
+**Version**: 2.0.0 (Python 3.11 Compatible - Metrics Corrected)  
+**Model**: Random Forest with Kaggle-aligned features (R²=0.9888, MAE=14.58 kWh)
