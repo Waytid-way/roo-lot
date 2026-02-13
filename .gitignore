@@ -15,10 +15,17 @@ build/
 .ipynb_checkpoints
 
 # ML Models (except the main prediction model)
-*.pkl
-!models/electricbills_predict.pkl
+# Note: electricbills_predict.pkl is tracked for deployment
+models/model.pkl
+models/model_optimized.pkl
+models/model_v2_next_month.pkl
+models/scaler.pkl
 *.h5
 *.joblib
+# Ignore other pkl files outside models/
+scripts/*.pkl
+data/*.pkl
+outputs/*.pkl
 
 # Data (exclude large files, keep templates)
 data/*.csv
