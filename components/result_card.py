@@ -171,7 +171,7 @@ def render_result_card(prediction_data: dict, expanded: bool = False):
     
     # Disclaimer - Transparency!
     st.markdown("""
-<div style="color: #e0e0e0; font-size: 0.9em; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px;">
+<div style="color: #e0e0e0; font-size: 0.9em; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 5px; margin-bottom: 20px;">
 ⚠️ <strong>หมายเหตุสำคัญ</strong>:<br>
 • นี่คือค่าการใช้ไฟรวมทั้งหมด ไม่ได้แยกตามเครื่องใช้<br>
 • Model ทำนายเป็นค่าเฉลี่ยตลอดปี (อาจต่างจริง ±20% ในเดือนร้อน/หนาว)<br>
