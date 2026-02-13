@@ -1,6 +1,29 @@
 """
 Roo-Lot Chatbot Interface - Phase 2 Complete
 Main application with full UI components and styling
+
+Version: 2.0.0 (Python 3.11 Compatible - Model Retrained)
+Last Updated: 2026-02-13 21:30 ICT
+
+IMPORTANT: This frontend must match the model documented in
+Report-ML-Project-Roo-Lot.md Chapter 3.1
+
+Model Features (DO NOT CHANGE without retraining):
+- household_size: int (1-10)
+- has_ac: bool (0 or 1)  ⚠️ BOOLEAN, not hours!
+- month: int (1-12)
+
+Derived features (auto-generated):
+- season_hot, season_rainy, weekend_ratio
+
+Model Output:
+- energy_consumption_kwh: float (total only, no breakdown)
+
+Model Performance (Retrained 2026-02-13):
+- R² = 0.9859
+- MAE = 16.63 kWh
+- RMSE = 21.09 kWh
+- Pickle Protocol: 4 (Python 3.11 compatible)
 """
 
 import streamlit as st
@@ -27,17 +50,26 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Initialize managers
-@st.cache_resource
-def get_conversation_manager():
-    return ConversationManager()
+# APP VERSION - Change this to force cache clear on Streamlit Cloud
+APP_VERSION = "2.0.0"
 
-@st.cache_resource
-def get_predictor():
+# Initialize managers
+if 'conv_manager' not in st.session_state:
+    st.session_state.conv_manager = ConversationManager()
+
+# Model should be cached globally (Resource) with version to bust cache
+@st.cache_resource(ttl="1h") 
+def get_predictor(version=APP_VERSION):
+    """Load predictor with version-based cache busting"""
     return ElectricityPredictor()
 
-conv_manager = get_conversation_manager()
-predictor = get_predictor()
+conv_manager = st.session_state.conv_manager
+predictor = get_predictor(version=APP_VERSION)
+
+# Display version in debug mode
+if st.sidebar.checkbox("🔧 Debug Info", value=False):
+    st.sidebar.info(f"App Version: {APP_VERSION}")
+    st.sidebar.info(f"Questions Count: {len(conv_manager.questions)}")
 
 # Load global CSS
 def load_global_css():
@@ -196,13 +228,45 @@ def render_chat_interface():
             </div>
             """, unsafe_allow_html=True)
             
-            user_input = st.text_input(
-                "Your answer:",
-                placeholder=current_q.get("placeholder", ""),
-                key=f"user_input_field_{current_q['id']}",
-                label_visibility="collapsed"
-            )
+            q_type = current_q.get('type', 'number')
             
+            # --- Dynamic Input Widgets ---
+            user_input = None
+            
+            if q_type == 'month_selector':
+                months = ["เลือกเดือน..."] + [
+                    "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                    "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+                ]
+                selected_month = st.selectbox(
+                    "Month",
+                    options=months,
+                    index=0,
+                    label_visibility="collapsed",
+                    key=f"month_select_{current_q['id']}"
+                )
+                if selected_month != "เลือกเดือน...":
+                    user_input = selected_month
+                    
+            elif q_type == 'choice':
+                options = current_q.get('options', ["ไม่มี options"])
+                user_input = st.radio(
+                    "Options",
+                    options=options,
+                    horizontal=True,
+                    label_visibility="collapsed",
+                    key=f"choice_radio_{current_q['id']}"
+                )
+                
+            else:
+                # Default Text Input
+                user_input = st.text_input(
+                    "Your answer:",
+                    placeholder=current_q.get("placeholder", ""),
+                    key=f"user_input_field_{current_q['id']}",
+                    label_visibility="collapsed"
+                )
+
             col1, col2 = st.columns([4, 1])
             with col2:
                 submitted = st.form_submit_button("Send →", use_container_width=True, type="primary")
