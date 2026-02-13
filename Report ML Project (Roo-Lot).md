@@ -221,7 +221,7 @@ param_grid_linear = {
 
 **4.1.1 Distribution ของ Target Variable**
 
-![Target Distribution](./outputs/eda/eda_target_distribution.png)
+![Target Distribution](outputs/eda/eda_target_distribution.png)
 *(รูปที่ 4.1: การกระจายตัวของปริมาณการใช้ไฟฟ้า - Histogram และ Boxplot)*
 
 **การวิเคราะห์จากกราฟ**:
@@ -251,7 +251,7 @@ param_grid_linear = {
 
 **4.1.2 Correlation Matrix**
 
-![Correlation Heatmap](./outputs/eda/eda_correlation.png)
+![Correlation Heatmap](outputs/eda/eda_correlation.png)
 *(รูปที่ 4.2: Correlation Heatmap ระหว่างตัวแปรทั้งหมด)*
 
 **การวิเคราะห์ความสัมพันธ์ (Correlation Analysis)**:
@@ -289,7 +289,7 @@ Energy Consumption ≈ 3.29 + (2.41 × household_size) + (3.84 × has_ac)
 
 **4.1.3 Feature vs Target Relationships**
 
-![Feature Relationships](./outputs/eda/eda_feature_relationships.png)
+![Feature Relationships](outputs/eda/eda_feature_relationships.png)
 *(รูปที่ 4.3: ความสัมพันธ์ระหว่าง Features หลักกับปริมาณการใช้ไฟฟ้า - 4 กราฟย่อย)*
 
 **การวิเคราะห์แต่ละ Feature เป็นรายตัว**:
@@ -382,7 +382,7 @@ Energy Consumption ≈ 3.29 + (2.41 × household_size) + (3.84 × has_ac)
 
 **4.3.1 Actual vs Predicted**
 
-![Actual vs Predicted](./outputs/model_viz/actual_vs_predicted.png)
+![Actual vs Predicted](outputs/model_viz/actual_vs_predicted.png)
 *(รูปที่ 4.4: Scatter Plot แสดงความสัมพันธ์ระหว่างค่าจริง (Actual) และค่าทำนาย (Predicted))*
 
 **การวิเคราะห์กราฟ**:
@@ -426,10 +426,10 @@ Energy Consumption ≈ 3.29 + (2.41 × household_size) + (3.84 × has_ac)
 
 **4.3.2 Residual Analysis**
 
-![Residual Plot](./outputs/model_viz/residual_plot.png)
+![Residual Plot](outputs/model_viz/residual_plot.png)
 *(รูปที่ 4.5: Residual Plot - ความสัมพันธ์ระหว่างค่าทำนายกับความคลาดเคลื่อน)*
 
-![Residual Distribution](./outputs/model_viz/residual_dist.png)
+![Residual Distribution](outputs/model_viz/residual_dist.png)
 *(รูปที่ 4.6: Histogram ของ Residuals พร้อม Kernel Density Curve)*
 
 **การวิเคราะห์ Residual Plot (รูปที่ 4.5)**:
