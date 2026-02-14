@@ -1,4 +1,8 @@
 # tests/test_model_predictor.py
+"""
+Updated tests for ElectricityPredictor - Aligned with Kaggle dataset model
+Features: household_size, has_ac, month
+"""
 import pytest
 import pandas as pd
 import numpy as np
@@ -8,14 +12,11 @@ import os
 import joblib
 
 class TestElectricityPredictor:
-    """Test ML model prediction logic"""
+    """Test ML model prediction logic with current model features"""
     
     @pytest.fixture
     def predictor(self):
-        # We might need to mock _load_model and _load_scaler if files don't exist
-        # But for now let's try to instantiate it and see if it handles missing files gracefully 
-        # or if we should mock it for the test to pass even without models.
-        # The code catches exceptions and returns None/prints error.
+        """Fixture to create predictor instance"""
         return ElectricityPredictor()
     
     def test_model_loading(self, predictor):
@@ -26,81 +27,226 @@ class TestElectricityPredictor:
         assert hasattr(predictor, 'scaler')
     
     def test_valid_prediction(self, predictor, mocker):
-        """Test: Valid inputs produce reasonable predictions"""
-        # Mock model and scaler to ensure test passes regardless of actual model files
+        """Test: Valid inputs produce reasonable predictions with new features"""
+        # Mock model to ensure test passes regardless of actual model files
         mock_model = mocker.Mock()
-        mock_model.predict.return_value = np.array([1500.0])
+        mock_model.predict.return_value = np.array([350.0])  # ~350 kWh
         predictor.model = mock_model
         
-        mock_scaler = mocker.Mock()
-        mock_scaler.transform.return_value = np.array([[0.5, 0.5, 0.5, 0.5, 0.5]])
-        predictor.scaler = mock_scaler
-        
+        # New input format aligned with Kaggle model
         valid_input = {
-            'ac_hours': 8,
-            'room_size': 30,
-            'fans': 2,
-            'lights': 2,
-            'computers': 1,
-            'other_appliances': 0
+            'household_size': 4,
+            'has_ac': 1,
+            'month': 6
         }
         
         result = predictor.predict(valid_input)
         
         assert result is not None
-        assert 'amount' in result
-        assert result['amount'] == 1500.0
-        assert 'breakdown' in result
-
-    def test_prediction_calculation(self, predictor, mocker):
-        """Test: Breakdown calculations are correct based on prediction"""
+        assert 'amount' in result  # Bill amount in THB
+        assert 'kwh' in result     # Energy consumption
+        assert 'range' in result   # Confidence interval
+        assert 'details' in result # Input features used
+        assert 'model_metrics' in result  # R², MAE, RMSE
+        
+        # Check calculations
+        assert result['kwh'] == 350.0  # From mock
+        assert result['amount'] == round(350.0 * 4.2, 2)  # 4.2 THB/unit
+    
+    def test_household_size_validation(self, predictor, mocker):
+        """Test: Invalid household_size returns None"""
+        predictor.model = mocker.Mock()
+        
+        # Test too small
+        result = predictor.predict({'household_size': 0, 'has_ac': 1, 'month': 6})
+        assert result is None
+        
+        # Test too large
+        result = predictor.predict({'household_size': 11, 'has_ac': 1, 'month': 6})
+        assert result is None
+    
+    def test_month_validation(self, predictor, mocker):
+        """Test: Invalid month returns None"""
+        predictor.model = mocker.Mock()
+        
+        # Test invalid month
+        result = predictor.predict({'household_size': 4, 'has_ac': 1, 'month': 13})
+        assert result is None
+        
+        result = predictor.predict({'household_size': 4, 'has_ac': 1, 'month': -1})
+        assert result is None
+    
+    def test_has_ac_parsing_string(self, predictor, mocker):
+        """Test: has_ac accepts string values (Thai)"""
         mock_model = mocker.Mock()
-        mock_model.predict.return_value = np.array([1000.0])
+        mock_model.predict.return_value = np.array([300.0])
         predictor.model = mock_model
         
-        mock_scaler = mocker.Mock()
-        mock_scaler.transform.return_value = np.array([[0.1]])
-        predictor.scaler = mock_scaler
+        # Test Thai "มี" (has AC)
+        result = predictor.predict({
+            'household_size': 3,
+            'has_ac': 'มี',
+            'month': 4
+        })
+        assert result is not None
         
-        inputs = {'ac_hours': 0, 'room_size': 0} # Dummy inputs
-        result = predictor.predict(inputs)
+        # Test Thai "ไม่มี" (no AC)
+        result = predictor.predict({
+            'household_size': 3,
+            'has_ac': 'ไม่มี',
+            'month': 4
+        })
+        assert result is not None
+    
+    def test_has_ac_parsing_numeric(self, predictor, mocker):
+        """Test: has_ac accepts numeric values"""
+        mock_model = mocker.Mock()
+        mock_model.predict.return_value = np.array([300.0])
+        predictor.model = mock_model
         
-        assert result['amount'] == 1000.0
-        assert result['breakdown']['ac_cost'] == 600.0  # 60%
-        assert result['breakdown']['appliances_cost'] == 300.0 # 30%
-        assert result['breakdown']['base_fee'] == 100.0 # 10%
+        # Test integer 1
+        result = predictor.predict({
+            'household_size': 3,
+            'has_ac': 1,
+            'month': 4
+        })
+        assert result is not None
+        
+        # Test float > 0
+        result = predictor.predict({
+            'household_size': 3,
+            'has_ac': 8.5,
+            'month': 4
+        })
+        assert result is not None
+    
+    def test_month_parsing_thai(self, predictor, mocker):
+        """Test: Month accepts Thai month names"""
+        mock_model = mocker.Mock()
+        mock_model.predict.return_value = np.array([300.0])
+        predictor.model = mock_model
+        
+        result = predictor.predict({
+            'household_size': 3,
+            'has_ac': 1,
+            'month': 'มิถุนายน'  # June
+        })
+        assert result is not None
+        assert result['details']['month'] == 6
     
     def test_missing_model_handling(self, predictor):
-        """Test: Returns None if model/scaler is missing"""
+        """Test: Returns None if model is missing"""
         predictor.model = None
-        result = predictor.predict({})
+        result = predictor.predict({
+            'household_size': 4,
+            'has_ac': 1,
+            'month': 6
+        })
         assert result is None
-
-    def test_input_preprocessing(self, predictor, mocker):
-        """Test: Inputs are correctly transformed into DataFrame columns"""
-        mock_scaler = mocker.Mock()
-        mock_scaler.transform.return_value = np.array([[0]]) # Return dummy
-        predictor.scaler = mock_scaler
-        predictor.model = mocker.Mock()
-        predictor.model.predict.return_value = [0]
+    
+    def test_input_dataframe_creation(self, predictor, mocker):
+        """Test: Inputs are correctly transformed into DataFrame"""
+        mock_model = mocker.Mock()
+        mock_model.predict.return_value = np.array([400.0])
+        predictor.model = mock_model
+        
+        # Capture the input DataFrame
+        captured_df = None
+        def capture_predict(df):
+            nonlocal captured_df
+            captured_df = df.copy()
+            return np.array([400.0])
+        
+        mock_model.predict.side_effect = capture_predict
         
         inputs = {
-            'ac_hours': 5,
-            'room_size': 25,
-            'fans': 2,
-            'lights': 3,
-            'computers': 0,
-            'other_appliances': 1
+            'household_size': 5,
+            'has_ac': 1,
+            'month': 7
         }
         
-        # We need to spy on scaler.transform to see what was passed
         predictor.predict(inputs)
         
-        # Check arguments passed to transform
-        args, _ = mock_scaler.transform.call_args
-        df = args[0]
+        assert captured_df is not None
+        assert isinstance(captured_df, pd.DataFrame)
+        assert captured_df.iloc[0]['household_size'] == 5
+        assert captured_df.iloc[0]['has_ac'] == 1
+        assert captured_df.iloc[0]['season_hot'] == 0  # July = rainy season
+        assert captured_df.iloc[0]['season_rainy'] == 1
+        assert 0 < captured_df.iloc[0]['weekend_ratio'] < 1
+    
+    def test_model_metrics_present(self, predictor, mocker):
+        """Test: Model metrics are included in result"""
+        mock_model = mocker.Mock()
+        mock_model.predict.return_value = np.array([250.0])
+        predictor.model = mock_model
         
-        assert isinstance(df, pd.DataFrame)
-        assert df.iloc[0]['ac_hours_per_day'] == 5
-        assert df.iloc[0]['room_area'] == 25
-        assert df.iloc[0]['num_appliances'] == 6 # 2+3+0+1
+        result = predictor.predict({
+            'household_size': 2,
+            'has_ac': 0,
+            'month': 1
+        })
+        
+        assert 'model_metrics' in result
+        assert result['model_metrics']['r2_score'] == 0.9888
+        assert result['model_metrics']['mae'] == 14.58
+        assert result['model_metrics']['rmse'] == 18.56
+    
+    def test_large_household_warning(self, predictor, mocker):
+        """Test: Warning for extrapolation beyond training data (>6 people)"""
+        mock_model = mocker.Mock()
+        mock_model.predict.return_value = np.array([600.0])
+        predictor.model = mock_model
+        
+        # Mock st.warning to capture it
+        warning_messages = []
+        def mock_warning(msg):
+            warning_messages.append(msg)
+        
+        mocker.patch('streamlit.warning', mock_warning)
+        
+        result = predictor.predict({
+            'household_size': 8,  # > 6
+            'has_ac': 1,
+            'month': 6
+        })
+        
+        assert result is not None
+        # Should have shown extrapolation warning
+        assert any('8 คน' in str(msg) for msg in warning_messages)
+    
+    def test_season_calculation(self, predictor, mocker):
+        """Test: Correct season is calculated from month"""
+        mock_model = mocker.Mock()
+        mock_model.predict.return_value = np.array([300.0])
+        predictor.model = mock_model
+        
+        # Test hot season (Mar-Jun)
+        predictor.predict({'household_size': 3, 'has_ac': 1, 'month': 4})
+        
+        # Test rainy season (Jul-Oct)
+        predictor.predict({'household_size': 3, 'has_ac': 1, 'month': 8})
+        
+        # Test cool season (Nov-Feb)
+        predictor.predict({'household_size': 3, 'has_ac': 1, 'month': 12})
+        
+        # All should complete without error
+        assert True
+    
+    def test_weekend_ratio_calculation(self, predictor, mocker):
+        """Test: Weekend ratio is calculated correctly"""
+        mock_model = mocker.Mock()
+        mock_model.predict.return_value = np.array([300.0])
+        predictor.model = mock_model
+        
+        # Weekend ratio should be between 0 and 1
+        result = predictor.predict({
+            'household_size': 3,
+            'has_ac': 1,
+            'month': 6
+        })
+        
+        assert result is not None
+        details = result['details']
+        assert 'weekend_ratio' in details
+        assert 0 <= details['weekend_ratio'] <= 1
